@@ -1,32 +1,11 @@
-from library import Book, Library, LibraryTerminalInterface
-import pytest
-import copy
+#David Lichtenberg
+#david.m.lichtenberg@gmail.com
 
-@pytest.fixture
-def book():
-    return Book("The Grapes of Wrath", "John Steinbeck")
+#definitions for fixtures (args) used in tests found in conftest.py
+#for more information on fixtures: http://pytest.org/latest/fixture.html
+#for general information on pytest: http://pytest.org/latest/
 
-@pytest.fixture
-def grapes(book):
-    return book
-
-@pytest.fixture
-def mice():
-    return Book("Of Mice and Men", "John Steinbeck")
-
-@pytest.fixture
-def moby():
-    return Book("Moby Dick", "Herman Melville")
-
-@pytest.fixture
-def library():
-    return Library()
-
-@pytest.fixture
-def filled_library(library, grapes, mice, moby):
-    for book in [grapes, mice, moby]:
-        library.add(book.title, book.author)
-    return library
+from library import Book
 
 def test_create_book(book):
     assert book
@@ -82,78 +61,3 @@ def test_show_all_by_author(filled_library, grapes, mice, moby):
     for book in steinbooks:
         assert book in shown
     assert not (moby in shown)
-
-@pytest.fixture
-def ui():
-    return LibraryTerminalInterface()
-
-def test_ui_query_add(ui, book):
-    result = ui.parse_query('add "{title}" "{author}"'.format(
-        title=book.title,
-        author=book.author))
-    assert result == ('add', [book.title, book.author])
-
-def test_ui_parse_add_good_input(ui, book):
-    good_input = '"{title}" "{author}"'.format(
-        title=book.title,
-        author=book.author)
-    result = ui.parse_add(good_input)
-    assert result == [book.title, book.author]
-
-def test_ui_parse_add_bad_input(ui):
-    bad_inputs = [
-        '"too" "many" "args wrapped in double quotes"',
-        '"too few args wrapped in doubles"', #too few args
-        'no args wrapped in doubles'
-    ]
-    for bad_input in bad_inputs:
-        with pytest.raises(Exception):
-            ui.parse_add(bad_input)
-
-def test_ui_parse_read(ui, book):
-    good_input = '"{title}"'.format(title = book.title)
-    assert ui.parse_read(good_input) == [book.title]
-
-def test_ui_parse_read_bad_input(ui):
-    bad_inputs = [
-        'title not wrapped in double quotes',
-        '"title" with extra data outside of double quotes',
-        '"too many" "things wrapped in doubles"'
-    ]
-    for bad_input in bad_inputs:
-        with pytest.raises(Exception):
-            ui.parse_read(bad_input)
-
-def test_ui_parse_show_all(ui):
-    good_input = 'all'
-    assert ui.parse_show(good_input) == ['all']
-
-def test_ui_parse_show_all_by_author(ui, book):
-    good_input = 'all by "{author}"'.format(author=book.author)
-    assert ui.parse_show(good_input) == ['all', book.author]
-
-def test_ui_parse_show_unread(ui, book):
-    good_input = 'unread'
-    assert ui.parse_show(good_input) == ['unread']
-
-def test_ui_parse_show_unread_by_author(ui, book):
-    good_input = 'unread by "{author}"'.format(author=book.author)
-    assert ui.parse_show(good_input) == ['unread', book.author]
-
-def test_ui_parse_show_bad_input(ui):
-    bad_input = 'bad_input'
-    with pytest.raises(Exception):
-        ui.parse_show(bad_input)
-
-def test_ui_execute_add(ui, book):
-    ui.execute('add', [book.title, book.author])
-    assert book in ui.library.books
-
-def test_ui_execute_read(ui, book):
-    ui.library.add_instance(book)
-    ui.execute('read', [book.title])
-    assert ui.library.books[0].read
-
-def test_ui_execute_show(ui, filled_library):
-    ui.library = filled_library
-    pass
