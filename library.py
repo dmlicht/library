@@ -36,6 +36,8 @@ class Library(object):
 
     def add_instance(self, book):
         """stores passed book instance in retrieval data structures"""
+        if self.by_title.get(book.title, False): #NOTE assuming that we cannot add two books with the same title
+            return
         self.books.append(book)
         self.by_title[book.title] = book
         self.by_author[book.author] = self.by_author.get(book.author, [])
