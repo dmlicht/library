@@ -20,6 +20,7 @@ class LibraryTerminalInterface(object):
                 if action != 'quit':
                     self.execute(action, args)
                 else: 
+                    print 'Bye!'
                     break
             except Exception, e:
                 print error_messages.get(str(e), e)
@@ -27,12 +28,12 @@ class LibraryTerminalInterface(object):
     def parse_query(self, input_string):
         """takes user input string
         returns tuple containing action and list of arguments"""
+        if input_string[:4] == 'quit':
+            return 'quit', []
         action, arg_string = input_string.split(" ", 1)
         sub_parser = 'parse_' + action
         args = []
-        if action == 'quit':
-            return action, args
-        elif self.has_method(sub_parser):
+        if self.has_method(sub_parser):
             exec 'args = self.' + sub_parser + '(arg_string)'
             return action, args
         else:
