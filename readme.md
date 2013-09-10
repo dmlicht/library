@@ -4,11 +4,9 @@ Library
 ## David Lichtenberg
 
 ## Structure
-The application breaks into two pieces:
-* data structures -contained in library.py
-* user interaction -contained in ui.py
-
-main.py creates an instance of TerminalLibraryInterface (from ui.py) and starts it running. 
+User input is handled in **ui.py**
+storing and retreiving the data in handled in **library.py**
+**main.py** creates an instance of TerminalLibraryInterface (from ui.py) and starts it running.
 
 ### Tests
 Tests are written using the pytest framework.
