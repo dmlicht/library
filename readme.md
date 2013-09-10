@@ -8,12 +8,12 @@ Library
 (may have to chmod library file to make it runnable)
 
 ## Usage
-* add "<title>" "<author>"
-    ** adds book with <title> and <author> to library
-* read "<title>"
-    ** sets state of book with <title> to read
-* show <all || unread> [by "<author>"]
-    ** show all books or unread books, optional selection by author
+* add "\<title\>" "\<author\>"
+    * adds book with <title> and <author> to library
+* read "\<title\>"
+    * sets state of book with <title> to read
+* show \<all || unread\> [by "\<author\>"]
+    * show all books or unread books, optional selection by author
 * quit
 
 ## Structure
