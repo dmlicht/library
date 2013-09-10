@@ -1,9 +1,3 @@
-"""
-            Bad input for add statement, please add using:
-            add "<title>" "<author>"
-            where user replaces <title> and <author> with book info
-"""
-
 class Book(object):
     """groups title, author and read state and make printing easier"""
     def __init__(self, title, author):
@@ -37,7 +31,7 @@ class Library(object):
     def add_instance(self, book):
         """stores passed book instance in retrieval data structures"""
         if self.by_title.get(book.title, False): #NOTE assuming that we cannot add two books with the same title
-            return
+            raise Exception('SAME_TITLE')
         self.books.append(book)
         self.by_title[book.title] = book
         self.by_author[book.author] = self.by_author.get(book.author, [])
@@ -49,6 +43,8 @@ class Library(object):
         book = self.by_title.get(title, False)
         if book:
             book.read = True
+        else:
+            raise Exception('NO_BOOK')
 
     def show(self, all_or_unread, author=None):
         """takes a list of filters and returns the subset of books that matches

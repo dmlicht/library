@@ -17,5 +17,12 @@ error_messages = {
     where user chooses between all and unread and by author is optional
     example: show unread by "John Steinbeck"
     example: show all
+    """,
+    'SAME_TITLE': """
+    A book with this title already exists so we can't add it. Sorry :(
+    """,
+    'NO_BOOK': """
+    This book isn't in your library. To see which books you own, try typing:
+    show all
     """
 }
